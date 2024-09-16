@@ -1,12 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  basePath: '/sitemap_checker',
+  basePath: '',
   async rewrites() {
     return [
       {
-        source: '/sitemap_checker/api/:path*',
+        source: '/home/api/:path*',
         destination: '/api/:path*',
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: true,
       },
     ];
   },

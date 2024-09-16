@@ -131,7 +131,7 @@
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	!function() {
-/******/ 		__webpack_require__.h = function() { return "57a05786f1b6e605"; }
+/******/ 		__webpack_require__.h = function() { return "0500d8b9232c1d6f"; }
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -646,7 +646,7 @@
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	!function() {
-/******/ 		__webpack_require__.p = "/sitemap_checker//_next/";
+/******/ 		__webpack_require__.p = "/_next/";
 /******/ 	}();
 /******/ 	
 /******/ 	/* webpack/runtime/react refresh */
