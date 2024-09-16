@@ -2,14 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   basePath: '',
-  async rewrites() {
-    return [
-      {
-        source: '/home/api/:path*',
-        destination: '/api/:path*',
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/home/api/:path*',
+  //       destination: '/api/:path*',
+  //     },
+  //   ];
+  // },
   async redirects() {
     return [
       {

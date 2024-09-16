@@ -24,7 +24,7 @@ export default function SitemapChecker({ urls }: SitemapCheckerProps) {
 
     try {
       setIsChecking(true);
-      const response = await axios.get('/sitemap_checker/api/fetch-sitemap', {
+      const response = await axios.get('/api/fetch-sitemap', {
         params: { url: sitemapUrl }
       });
       const parser = new xml2js.Parser();
