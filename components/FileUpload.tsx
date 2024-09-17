@@ -16,28 +16,27 @@ export default function FileUpload({ setUrls, foundUrls = [], notFoundUrls = [] 
   const [textInputError, setTextInputError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
-      setIsUploaded(false);
+      const selectedFile = e.target.files[0];
+      setFile(selectedFile);
+      await handleUpload(selectedFile);
     }
     if (showTextInput) {
       setShowTextInput(false);
-      setTextInput('');  // Opcjonalnie: wyczyść zawartość pola tekstowego
-      setTextInputError('');  // Opcjonalnie: wyczyść błędy pola tekstowego
+      setTextInput('');
+      setTextInputError('');
     }
   };
 
-  const handleUpload = async () => {
-    if (file) {
-      const data = await file.arrayBuffer();
-      const workbook = XLSX.read(data);
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-      const urls = jsonData.flat().filter((url): url is string => typeof url === 'string');
-      setUrls(urls);
-      setIsUploaded(true);
-    }
+  const handleUpload = async (selectedFile: File) => {
+    const data = await selectedFile.arrayBuffer();
+    const workbook = XLSX.read(data);
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    const urls = jsonData.flat().filter((url): url is string => typeof url === 'string');
+    setUrls(urls);
+    setIsUploaded(true);
   };
 
   const handleAddAsText = () => {
@@ -86,28 +85,21 @@ export default function FileUpload({ setUrls, foundUrls = [], notFoundUrls = [] 
 
   return (
     <div className="mb-6 p-4 bg-gray-100 rounded-lg">
-      <h2 className="text-xl font-semibold mb-4">Please upload your excel file or add links as text</h2>
+      <h2 className="text-xl font-semibold mb-4">Proszę wgrać plik Excel lub dodać linki jako tekst</h2>
       <div className="flex items-center space-x-4 mb-4">
         <input 
           type="file" 
           onChange={handleFileChange} 
           accept=".xlsx,.xls"
-          data-text="Choose file"
+          data-text="Wybierz plik"
           className="file-input file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           ref={fileInputRef}
         />
         <button 
-          onClick={handleUpload} 
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
-          disabled={!file}
-        >
-          Check file
-        </button>
-        <button 
           onClick={handleAddAsText}
           className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
         >
-          Add as text
+          Dodaj jako tekst
         </button>
       </div>
       {showTextInput && (
@@ -129,14 +121,6 @@ export default function FileUpload({ setUrls, foundUrls = [], notFoundUrls = [] 
       )}
       {isUploaded && (
         <p className="mt-2 text-green-600">Linki zostały pomyślnie dodane!</p>
-      )}
-      {((foundUrls && foundUrls.length > 0) || (notFoundUrls && notFoundUrls.length > 0)) && (
-        <button 
-          onClick={handleDownloadReport}
-          className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
-        >
-          Download raport
-        </button>
       )}
     </div>
   );
